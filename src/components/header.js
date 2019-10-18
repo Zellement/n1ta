@@ -23,35 +23,6 @@ const Header = ({ siteTitle }) => (
         </Link>
       </div>
 
-      <nav>
-        <ul className="flex flex-wrap">
-          <li>
-            <Link
-              activeClassName="is--active"
-              className="link mr-3"
-              to="/">
-                Home
-            </Link>
-          </li>
-          <li>
-            <Link
-              activeClassName="is--active"
-              className="link mr-3"
-              to="/about">
-                About
-            </Link>
-          </li>
-          <li>
-            <a
-              className="link mr-3"
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://github.com/samuelgoddard/gatsby-tailwind-motion">
-                Github
-            </a>
-          </li>
-        </ul>
-      </nav>
     </div>
   </header>
 )

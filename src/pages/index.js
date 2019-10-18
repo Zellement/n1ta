@@ -1,4 +1,5 @@
 import React from "react"
+import { graphql } from 'gatsby'
 import SEO from "../components/seo"
 import { motion } from 'framer-motion'
 
@@ -21,10 +22,16 @@ const item = {
   },
 }
 
-const IndexPage = () => {
+const IndexPage = ({data}) => {
+
+  const main = data.prismicHomepage.data
+  const slices = data.allPrismicHomepageBodySection.edges
+
   return (
     <div>
+
       <SEO title="Home" />
+
       <motion.section
         variants={container}
         initial="hidden" 
@@ -36,7 +43,7 @@ const IndexPage = () => {
           variants={item}
           transition="easeInOut"
         >
-          <p className="text-lg md:text-xl pl-3 border-l-2 border-black">An opinionated starter for Gatsby v2 with TailwindCSS, PostCSS and Framer Motion page transitions.</p>
+          <div className="text-lg md:text-xl pl-3 border-l-2 border-black">{main.intro_text.html}</div>
         </motion.div>
 
         <motion.div 
@@ -52,11 +59,24 @@ const IndexPage = () => {
           variants={item}
           transition="easeInOut"
         >
-          <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
-          <h2>Lorem ipsum dolor sit amet</h2>
-          
-          <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        {
+          slices.map(slicesData => (
+            <div>
+            <h2>{slicesData.node.primary.section_title.text}</h2>
+
+                {
+                  slicesData.node.items.map(itemsData => (
+                    <div>
+                    {itemsData.title.text}
+                    </div>
+                  ))
+                }
+
+            </div>
+          ))
+        }
+
         </motion.div>
       </motion.section>
     </div>
@@ -64,3 +84,45 @@ const IndexPage = () => {
 }
 
 export default IndexPage
+
+export const pageQuery = graphql`
+query MyQuery {
+  allPrismicHomepageBodySection {
+    edges {
+      node {
+        primary {
+          section_title {
+            html
+            text
+          }
+        }
+        id
+        items {
+          title {
+            text
+          }
+          telephone
+          website {
+            url
+          }
+          text {
+            html
+          }
+        }
+      }
+    }
+  }
+  prismicHomepage {
+    data {
+      title {
+        text
+      }
+      intro_text {
+        html
+      }
+    }
+  }
+}
+
+
+`
